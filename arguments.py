@@ -9,8 +9,8 @@ def get_args():
     # General Arguments
     parser.add_argument('--seed', type=int, default=1,
                         help='random seed (default: 1)')
-    parser.add_argument('--auto_gpu_config', type=int, default=1)
-    parser.add_argument('--total_num_scenes', type=str, default="auto")
+    parser.add_argument('--auto_gpu_config', type=int, default=0)
+    parser.add_argument('--total_num_scenes', type=str, default="1")
     parser.add_argument('-n', '--num_processes', type=int, default=5,
                         help="""how many training processes to use (default:5)
                                 Overridden when auto_gpu_config=1
@@ -70,7 +70,7 @@ def get_args():
     parser.add_argument('-el', '--max_episode_length', type=int, default=500,
                         help="""Maximum episode length""")
     parser.add_argument("--task_config", type=str,
-                        default="tasks/objectnav_hm3d.yaml",
+                        default="tasks/objectnav_gibson.yaml",
                         help="path to config yaml containing task information")
     parser.add_argument("--split", type=str, default="train",
                         help="dataset split (train | val | val_mini) ")

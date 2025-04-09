@@ -4,7 +4,7 @@ from .habitat import construct_envs, construct_envs21
 
 
 def make_vec_envs(args):
-    envs = construct_envs21(args)
+    envs = construct_envs(args)
     envs = VecPyTorch(envs, args.device)
     return envs
 

@@ -11,6 +11,7 @@ import habitat
 from envs.utils.fmm_planner import FMMPlanner
 from constants import coco_categories
 import envs.utils.pose as pu
+import pdb
 
 
 class ObjectGoal_Env(habitat.RLEnv):
@@ -92,7 +93,7 @@ class ObjectGoal_Env(habitat.RLEnv):
         """
 
         args = self.args
-        self.scene_path = self.habitat_env.sim.config.SCENE
+        self.scene_path = self.habitat_env.sim.habitat_config.SCENE
         scene_name = self.scene_path.split("/")[-1].split(".")[0]
 
         if self.scene_path != self.last_scene_path:
@@ -171,7 +172,7 @@ class ObjectGoal_Env(habitat.RLEnv):
 
         args = self.args
 
-        self.scene_path = self.habitat_env.sim.config.SCENE
+        self.scene_path = self.habitat_env.sim.habitat_config.SCENE
         scene_name = self.scene_path.split("/")[-1].split(".")[0]
 
         scene_info = self.dataset_info[scene_name]
@@ -332,21 +333,20 @@ class ObjectGoal_Env(habitat.RLEnv):
 
         if new_scene:
             obs = super().reset()
-            self.scene_name = self.habitat_env.sim.config.SCENE
+            self.scene_name = self.habitat_env.sim.habitat_config.SCENE
             print("Changing scene: {}/{}".format(self.rank, self.scene_name))
 
-        self.scene_path = self.habitat_env.sim.config.SCENE
+        self.scene_path = self.habitat_env.sim.habitat_config.SCENE
 
         if self.split == "val":
             obs = self.load_new_episode()
         else:
             obs = self.generate_new_episode()
 
-        # print("obs: ,", obs)
-        # print("obs shape: ,", obs.shape)
+
         rgb = obs['rgb'].astype(np.uint8)
         depth = obs['depth']
-        semantic = self._preprocess_semantic(obs["semantic"])
+        semantic = obs["semantic"]
         # print("rgb shape: ,", rgb.shape)
         # print("depth shape: ,", depth.shape)
         # print("semantic shape: ,", semantic.shape)
@@ -399,7 +399,7 @@ class ObjectGoal_Env(habitat.RLEnv):
 
         rgb = obs['rgb'].astype(np.uint8)
         depth = obs['depth']
-        semantic = self._preprocess_semantic(obs["semantic"])
+        semantic = obs["semantic"]
         state = np.concatenate((rgb, depth, semantic), axis=2).transpose(2, 0, 1)
 
         self.timestep += 1
